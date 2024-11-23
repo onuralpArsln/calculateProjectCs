@@ -12,3 +12,4 @@
 /Users/onuralparslan/projects/calculateProjectCs/obj/Debug/net8.0/calculateProjectCs.pdb
 /Users/onuralparslan/projects/calculateProjectCs/obj/Debug/net8.0/calculateProjectCs.genruntimeconfig.cache
 /Users/onuralparslan/projects/calculateProjectCs/obj/Debug/net8.0/ref/calculateProjectCs.dll
+/Users/onuralparslan/projects/calculateProjectCs/obj/Debug/net8.0/calculateProjectCs.sourcelink.json

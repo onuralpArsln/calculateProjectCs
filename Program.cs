@@ -1,44 +1,20 @@
-using System;
-
 class Program
 {
-
 	static void Main(string[] args)
 	{
+		var parser = new HydrostaticTableParser("hydrostatics.txt");
+		parser.detectLines();
+		Console.WriteLine("getrting lines 28 31 ");
+		parser.retrieveLinesByNumber(28);
+		parser.retrieveLinesByNumber(31);
+		Console.WriteLine("getrting lines 299 300 301 302");
 
-		string filePath = "hydrostatics.txt";
-		string searchTerm = "Trim Draft Displt LCB TCB VCB WPA LCF KML KMT BML BMT IL IT TPC MTC WSA"; // Replace with your search term
+		parser.retrieveLinesByNumber(299);
+		parser.retrieveLinesByNumber(300);
+		parser.retrieveLinesByNumber(301);
+		parser.retrieveLinesByNumber(302);
 
-		try
-		{
-			if (File.Exists(filePath))
-			{
-				using (StreamReader reader = new StreamReader(filePath))
-				{
-					string line;
-					int lineNumber = 0;
 
-					while ((line = reader.ReadLine()) != null)
-					{
-						lineNumber++;
-
-						// Check if the line contains the search term
-						if (line.Contains(searchTerm))
-						{
-							Console.WriteLine($"Line {lineNumber}: {line}");
-						}
-					}
-				}
-			}
-			else
-			{
-				Console.WriteLine("File not found.");
-			}
-		}
-		catch (Exception ex)
-		{
-			Console.WriteLine($"An error occurred: {ex.Message}");
-		}
 
 
 	}
