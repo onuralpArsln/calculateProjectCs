@@ -136,6 +136,46 @@ class TableGenerator
         }
     }
 
+    public void lookForDraft(double givenDraft)
+    {
+        DataRow draftLowerBound = null;
+        DataRow draftUpperBound = null;
+
+        // Find the row with the highest "Draft" value that is <= givenDraft
+        draftLowerBound = table.AsEnumerable()
+                            .Where(r => r.Field<double>("Draft") <= givenDraft)
+                            .OrderByDescending(r => r.Field<double>("Draft"))
+                            .FirstOrDefault();
+
+        // Find the row with the lowest "Draft" value that is >= givenDraft
+        draftUpperBound = this.table.AsEnumerable()
+                            .Where(r => r.Field<double>("Draft") >= givenDraft)
+                            .OrderBy(r => r.Field<double>("Draft"))
+                            .FirstOrDefault();
+
+        // Display the results (draftLowerBound and draftUpperBound are DataRow objects, so we'll extract relevant data)
+        if (draftLowerBound != null)
+        {
+            Console.WriteLine("Lower bound Draft: " + draftLowerBound["Draft"] + ", Trim: " + draftLowerBound["Trim"]);
+            DisplayAllValues(draftLowerBound);  // Display all values for the draft lower bound row
+        }
+        else
+        {
+            Console.WriteLine("No lower bound found for Draft.");
+        }
+
+        if (draftUpperBound != null)
+        {
+            Console.WriteLine("Upper bound Draft: " + draftUpperBound["Draft"] + ", Trim: " + draftUpperBound["Trim"]);
+            DisplayAllValues(draftUpperBound);  // Display all values for the draft upper bound row
+        }
+        else
+        {
+            Console.WriteLine("No upper bound found for Draft.");
+        }
+    }
+
+
     public void lookForTrimAndDraft(double givenTrim, double givenDraft)
     {
         // Find the lower and upper bounds for Trim
@@ -156,8 +196,11 @@ class TableGenerator
             return;
         }
 
+        // Display the found Trim bounds along with all other values in the row
         Console.WriteLine("Lower Bound Trim: " + trimLowerBound["Trim"] + ", Draft: " + trimLowerBound["Draft"]);
         Console.WriteLine("Upper Bound Trim: " + trimUpperBound["Trim"] + ", Draft: " + trimUpperBound["Draft"]);
+        DisplayAllValues(trimLowerBound);  // Display all column values for lower bound
+        DisplayAllValues(trimUpperBound);  // Display all column values for upper bound
 
         // Cast the Trim and Draft values to double for proper comparison
         double lowerTrim = trimLowerBound.Field<double>("Trim");
@@ -196,6 +239,12 @@ class TableGenerator
             Console.WriteLine("Draft Upper Bound for Trim Upper Bound: " + draftUpperForTrimUpper["Draft"]);
             Console.WriteLine("Draft Lower Bound for Trim Lower Bound: " + draftLowerForTrimLower["Draft"]);
             Console.WriteLine("Draft Upper Bound for Trim Lower Bound: " + draftUpperForTrimLower["Draft"]);
+
+            // Display all values for the draft rows
+            DisplayAllValues(draftLowerForTrimUpper);  // Display all column values for draft lower bound for upper trim
+            DisplayAllValues(draftUpperForTrimUpper);  // Display all column values for draft upper bound for upper trim
+            DisplayAllValues(draftLowerForTrimLower);  // Display all column values for draft lower bound for lower trim
+            DisplayAllValues(draftUpperForTrimLower);  // Display all column values for draft upper bound for lower trim
         }
         else
         {
@@ -203,5 +252,14 @@ class TableGenerator
         }
     }
 
+    // Helper method to display all values of a DataRow
+    public void DisplayAllValues(DataRow row)
+    {
+        foreach (var column in row.ItemArray)
+        {
+            Console.Write(column + "\t");
+        }
+        Console.WriteLine();  // New line after each row for clarity
+    }
 
 }
