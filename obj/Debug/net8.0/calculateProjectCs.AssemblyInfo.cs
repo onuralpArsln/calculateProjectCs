@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("calculateProjectCs")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+17952bcbea49fcd93f429aba24f7cb9c2e72c20e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+49c41656a9a47bacdfe1229fc5edbd3880924646")]
 [assembly: System.Reflection.AssemblyProductAttribute("calculateProjectCs")]
 [assembly: System.Reflection.AssemblyTitleAttribute("calculateProjectCs")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

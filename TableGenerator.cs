@@ -135,4 +135,73 @@ class TableGenerator
             Console.WriteLine("No upper bound found.");
         }
     }
+
+    public void lookForTrimAndDraft(double givenTrim, double givenDraft)
+    {
+        // Find the lower and upper bounds for Trim
+        DataRow trimLowerBound = table.AsEnumerable()
+            .Where(r => r.Field<double>("Trim") <= givenTrim)
+            .OrderByDescending(r => r.Field<double>("Trim"))
+            .FirstOrDefault();
+
+        DataRow trimUpperBound = table.AsEnumerable()
+            .Where(r => r.Field<double>("Trim") >= givenTrim)
+            .OrderBy(r => r.Field<double>("Trim"))
+            .FirstOrDefault();
+
+        // If either trim bound is not found, return
+        if (trimLowerBound == null || trimUpperBound == null)
+        {
+            Console.WriteLine("Trim bounds not found.");
+            return;
+        }
+
+        Console.WriteLine("Lower Bound Trim: " + trimLowerBound["Trim"] + ", Draft: " + trimLowerBound["Draft"]);
+        Console.WriteLine("Upper Bound Trim: " + trimUpperBound["Trim"] + ", Draft: " + trimUpperBound["Draft"]);
+
+        // Cast the Trim and Draft values to double for proper comparison
+        double lowerTrim = trimLowerBound.Field<double>("Trim");
+        double upperTrim = trimUpperBound.Field<double>("Trim");
+        double lowerDraft = trimLowerBound.Field<double>("Draft");
+        double upperDraft = trimUpperBound.Field<double>("Draft");
+
+        // Find the lower and upper bounds for Draft based on the given draft and trim values
+        // For Trim Upper Bound (given upper trim), find the lower and upper Draft bounds
+        DataRow draftLowerForTrimUpper = table.AsEnumerable()
+            .Where(r => r.Field<double>("Trim") == upperTrim && r.Field<double>("Draft") <= givenDraft)
+            .OrderByDescending(r => r.Field<double>("Draft"))
+            .FirstOrDefault();
+
+        DataRow draftUpperForTrimUpper = table.AsEnumerable()
+            .Where(r => r.Field<double>("Trim") == upperTrim && r.Field<double>("Draft") >= givenDraft)
+            .OrderBy(r => r.Field<double>("Draft"))
+            .FirstOrDefault();
+
+        // For Trim Lower Bound (given lower trim), find the lower and upper Draft bounds
+        DataRow draftLowerForTrimLower = table.AsEnumerable()
+            .Where(r => r.Field<double>("Trim") == lowerTrim && r.Field<double>("Draft") <= givenDraft)
+            .OrderByDescending(r => r.Field<double>("Draft"))
+            .FirstOrDefault();
+
+        DataRow draftUpperForTrimLower = table.AsEnumerable()
+            .Where(r => r.Field<double>("Trim") == lowerTrim && r.Field<double>("Draft") >= givenDraft)
+            .OrderBy(r => r.Field<double>("Draft"))
+            .FirstOrDefault();
+
+        // Check if all the rows are found and print the results
+        if (draftLowerForTrimUpper != null && draftUpperForTrimUpper != null &&
+            draftLowerForTrimLower != null && draftUpperForTrimLower != null)
+        {
+            Console.WriteLine("Draft Lower Bound for Trim Upper Bound: " + draftLowerForTrimUpper["Draft"]);
+            Console.WriteLine("Draft Upper Bound for Trim Upper Bound: " + draftUpperForTrimUpper["Draft"]);
+            Console.WriteLine("Draft Lower Bound for Trim Lower Bound: " + draftLowerForTrimLower["Draft"]);
+            Console.WriteLine("Draft Upper Bound for Trim Lower Bound: " + draftUpperForTrimLower["Draft"]);
+        }
+        else
+        {
+            Console.WriteLine("One or more draft bounds not found.");
+        }
+    }
+
+
 }
